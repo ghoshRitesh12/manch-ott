@@ -1,26 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { useCounterStore } from "@/store/counter";
+import HomePage from "@/modules/home/HomePage";
+import LoginPage from "@/modules/login/LoginPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const { count, increment, decrement } = useCounterStore(
-    ({ count, increment, decrement }) => ({
-      count,
-      increment,
-      decrement,
-    })
-  );
-
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="mt-5 p-4 border-[1px] border-red-400 w-fit">
-        count: {count}
-        <br /> <br />
-        <Button onClick={increment}>increment</Button>
-        <br /> <br />
-        <Button onClick={decrement}>decrement</Button>
-      </div>
-    </>
+    <div>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage />}
+          />
+          <Route
+            path="/login"
+            element={<LoginPage />}
+          />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
