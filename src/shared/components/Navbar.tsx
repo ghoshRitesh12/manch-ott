@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import fc from "@/lib/helpers/classes";
+import { Button } from "@/shared/components/ui/button";
 
 const routeLinks = [
   {
@@ -10,25 +11,31 @@ const routeLinks = [
     routeHref: "/video",
     routeName: "Video",
   },
-  {
-    routeHref: "/login",
-    routeName: "Login",
-  },
+  // {
+  //   routeHref: "/login",
+  //   routeName: "Login",
+  // },
 ] as const;
 
 export default function Navbar() {
   return (
-    <div>
+    <nav className="bg-zinc-800">
       {routeLinks.map((r) => (
-        <NavLink
-          className={fc(`
-            inline-block mx-4 my-4
-          `)}
-          to={r.routeHref}
+        <Button
+          variant="link"
+          asChild
         >
-          {r.routeName}
-        </NavLink>
+          <NavLink
+            className={fc(`
+            inline-block mx-4 my-2
+            text-white 
+          `)}
+            to={r.routeHref}
+          >
+            {r.routeName}
+          </NavLink>
+        </Button>
       ))}
-    </div>
+    </nav>
   );
 }
