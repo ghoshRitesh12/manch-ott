@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
 import fc from "@/lib/helpers/classes";
 import { Button } from "@/shared/components/ui/button";
+// import {
+//   NavigationMenu,
+//   NavigationMenuList,
+//   NavigationMenuItem,
+// } from "@/shared/components/ui/navigation-menu";
 
 const routeLinks = [
   {
@@ -24,12 +29,13 @@ export default function Navbar() {
         <Button
           variant="link"
           asChild
+          key={r.routeHref}
         >
           <NavLink
             className={fc(`
-            inline-block mx-4 my-2
-            text-white 
-          `)}
+              inline-block mx-4 my-2
+              text-white 
+            `)}
             to={r.routeHref}
           >
             {r.routeName}
@@ -37,5 +43,12 @@ export default function Navbar() {
         </Button>
       ))}
     </nav>
+    // <NavigationMenu>
+    // <NavigationMenuList>
+    // <NavigationMenuItem>
+
+    // </NavigationMenuItem>
+    // </NavigationMenuList>
+    // </NavigationMenu>
   );
 }
