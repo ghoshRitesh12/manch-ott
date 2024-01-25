@@ -1,34 +1,15 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./shared/components/Navbar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Router from "@/shared/components/Router";
 
-const HomePage = lazy(() => import("@/modules/home/HomePage"));
-const LoginPage = lazy(() => import("@/modules/login/LoginPage"));
-const VideoPage = lazy(() => import("@/modules/video/VideoPage"));
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="">
-      <BrowserRouter>
-        <Navbar />
-        <Suspense>
-          <Routes>
-            <Route
-              path="/"
-              element={<HomePage />}
-            />
-            <Route
-              path="/login"
-              element={<LoginPage />}
-            />
-            <Route
-              path="/video"
-              element={<VideoPage />}
-            />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <Router />
+      </div>
+    </QueryClientProvider>
   );
 }
 
