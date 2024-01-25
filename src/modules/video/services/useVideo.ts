@@ -19,6 +19,6 @@ async function getVideo(videoId: string) {
 export default function useVideo(videoId: string) {
   return useQuery({
     queryFn: () => getVideo(videoId),
-    queryKey: ["video_thumbnails", videoId],
+    queryKey: ["video", videoId],
   });
 }
