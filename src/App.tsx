@@ -1,16 +1,19 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SWRConfig, SWRConfiguration } from "swr";
 import Router from "@/shared/components/Router";
 
-const queryClient = new QueryClient();
-
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div>
-        <Router />
-      </div>
-    </QueryClientProvider>
-  );
+	const swrConfig: SWRConfiguration = {
+		errorRetryCount: 3,
+		suspense: true,
+	};
+
+	return (
+		<SWRConfig value={swrConfig}>
+			<div>
+				<Router />
+			</div>
+		</SWRConfig>
+	);
 }
 
 export default App;
