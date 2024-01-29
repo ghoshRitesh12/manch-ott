@@ -1,26 +1,23 @@
 // import { client } from "@/shared/config/axios";
 // import { VideoThumbnail } from "../types/videoThumbnail";
-import { useQuery } from "@tanstack/react-query";
+import useSWR from "swr";
 import thumbnailsArray from "@/shared/mockData.json";
 
 function wait(ms: number) {
-  return new Promise<void>((res) => {
-    setTimeout(res, ms);
-  });
+	return new Promise<void>((res) => {
+		setTimeout(res, ms);
+	});
 }
 
 async function getVideoThumbnails() {
-  try {
-    await wait(500);
-    return thumbnailsArray;
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		await wait(1000);
+		return thumbnailsArray;
+	} catch (err) {
+		throw err;
+	}
 }
 
 export default function useVideoThumbnails() {
-  return useQuery({
-    queryFn: () => getVideoThumbnails(),
-    queryKey: ["video_thumbnails"],
-  });
+	return useSWR(["video_thumbnails"], () => getVideoThumbnails());
 }
