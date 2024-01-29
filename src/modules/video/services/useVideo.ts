@@ -1,24 +1,27 @@
-import { useQuery } from "@tanstack/react-query";
+import useSWR from "swr";
 import thumbnailsArray from "@/shared/mockData.json";
 
 function wait(ms: number) {
-  return new Promise<void>((res) => {
-    setTimeout(res, ms);
-  });
+	return new Promise<void>((res) => {
+		setTimeout(res, ms);
+	});
 }
 
 async function getVideo(videoId: string) {
-  try {
-    await wait(500);
-    return thumbnailsArray.find((e) => e.id === videoId);
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		await wait(1000);
+		if (videoId === "error") {
+			return Promise.reject("a mock error");
+		}
+		return thumbnailsArray.find((e) => e?.id === videoId);
+	} catch (err) {
+		throw err;
+	}
 }
 
 export default function useVideo(videoId: string) {
-  return useQuery({
-    queryFn: () => getVideo(videoId),
-    queryKey: ["video", videoId],
-  });
+	const isKeyValid: string[] | null = videoId.trim()
+		? ["video", videoId]
+		: null;
+	return useSWR(isKeyValid, () => getVideo(videoId));
 }
