@@ -7,12 +7,12 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-    	<div>
-    		<Router />
-    		<ReactQueryDevtools initialIsOpen={true} />
-    	</div>
+      <div>
+    	  <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </div>
     </QueryClientProvider>
-	);
+  );
 }
 
 export default App;
