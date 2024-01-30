@@ -1,18 +1,17 @@
-import { SWRConfig, SWRConfiguration } from "swr";
 import Router from "@/shared/components/Router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
-	const swrConfig: SWRConfiguration = {
-		errorRetryCount: 3,
-		suspense: true,
-	};
+	const queryClient = new QueryClient();
 
 	return (
-		<SWRConfig value={swrConfig}>
+		<QueryClientProvider client={queryClient}>
 			<div>
 				<Router />
+				<ReactQueryDevtools initialIsOpen={true} />
 			</div>
-		</SWRConfig>
+		</QueryClientProvider>
 	);
 }
 
