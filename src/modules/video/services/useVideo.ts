@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import thumbnailsArray from "@/shared/mockData.json";
 
 function wait(ms: number) {
@@ -20,8 +20,8 @@ async function getVideo(videoId: string) {
 }
 
 export default function useVideo(videoId: string) {
-	const isKeyValid: string[] | null = videoId.trim()
-		? ["video", videoId]
-		: null;
-	return useSWR(isKeyValid, () => getVideo(videoId));
+	return useSuspenseQuery({
+		queryFn: () => getVideo(videoId),
+		queryKey: ["video", videoId],
+	});
 }

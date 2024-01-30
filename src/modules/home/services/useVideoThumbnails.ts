@@ -1,6 +1,6 @@
 // import { client } from "@/shared/config/axios";
 // import { VideoThumbnail } from "../types/videoThumbnail";
-import useSWR from "swr";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import thumbnailsArray from "@/shared/mockData.json";
 
 function wait(ms: number) {
@@ -19,5 +19,9 @@ async function getVideoThumbnails() {
 }
 
 export default function useVideoThumbnails() {
-	return useSWR(["video_thumbnails"], () => getVideoThumbnails());
+	return useSuspenseQuery({
+		queryKey: ["video_thumbnails"],
+		queryFn: getVideoThumbnails,
+		staleTime: Infinity,
+	});
 }
