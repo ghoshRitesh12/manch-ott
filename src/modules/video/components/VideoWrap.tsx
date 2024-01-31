@@ -1,13 +1,13 @@
-import { Suspense, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { QueryErrorResetBoundary } from "@tanstack/react-query";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import useVideo from "../services/useVideo";
 import VideoPlayer from "../components/VideoPlayer";
-import { useParams } from "react-router-dom";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { VideoPathParams } from "../types/pathParams";
+import SuspenseErrorBoundary from "@/shared/components/SuspenseErrorBoundary";
+
+import { type VideoPathParams } from "../types/pathParams";
 
 function _VideoWrap({ videoId }: { videoId: string }) {
   const { data: videoData } = useVideo(videoId);
@@ -64,36 +64,32 @@ export default function VideoWrap() {
   const [_videoId, _setVideoId] = useState("error");
 
   return videoId ? (
-    <QueryErrorResetBoundary>
-      {({ reset }) => (
-        <ErrorBoundary
-          onReset={() => {
-            _setVideoId(videoId);
-            reset();
-          }}
-          fallbackRender={({ error, resetErrorBoundary }) => (
-            <div>
-              There was an error!
-              <Button
-                onClick={() => {
-                  console.log("resetting error");
-                  resetErrorBoundary();
-                  console.clear();
-                }}
-              >
-                Try again
-              </Button>
-              <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
-            </div>
-          )}
-        >
-          <Suspense
-            fallback={<h1 className="text-2xl mt-10">VIDEO LOADING....</h1>}
+    <SuspenseErrorBoundary
+      errorFallback={({ error, resetErrorBoundary }) => (
+        <div>
+          There was an error!
+          <Button
+            onClick={() => {
+              console.log("resetting error");
+              resetErrorBoundary();
+              console.clear();
+            }}
           >
-            <_VideoWrap videoId={_videoId} />
-          </Suspense>
-        </ErrorBoundary>
+            Try again
+          </Button>
+          <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
+        </div>
       )}
-    </QueryErrorResetBoundary>
+      onErrorReset={(details, resetFn) => {
+        console.log(details);
+        _setVideoId(videoId);
+        resetFn();
+      }}
+      suspenseFallback={() => (
+        <h1 className="text-2xl mt-10">VIDEO LOADING....</h1>
+      )}
+    >
+      <_VideoWrap videoId={_videoId} />
+    </SuspenseErrorBoundary>
   ) : null;
 }
